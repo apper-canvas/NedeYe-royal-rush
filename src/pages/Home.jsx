@@ -16,7 +16,7 @@ const Home = () => {
         className="text-center mb-12"
       >
         <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-          Welcome to RoyalRush
+          Welcome to Ludo Master
         </h1>
         <p className="text-lg text-surface-600 dark:text-surface-400 max-w-2xl mx-auto">
           Experience the classic Ludo game with a modern twist. Challenge friends or AI opponents in this strategic race to the finish!
@@ -99,7 +99,7 @@ const Home = () => {
           exit={{ opacity: 0, height: 0 }}
           className="bg-surface-100 dark:bg-surface-800 rounded-xl p-6 mb-8 shadow-card"
         >
-          <h3 className="text-xl font-bold mb-4">How to Play RoyalRush</h3>
+          <h3 className="text-xl font-bold mb-4">How to Play Ludo Master</h3>
           <ul className="list-disc pl-5 space-y-2 text-surface-700 dark:text-surface-300">
             <li>Each player has 4 tokens that start in their home yard.</li>
             <li>Roll a 6 to move a token out of the home yard onto the starting square.</li>
