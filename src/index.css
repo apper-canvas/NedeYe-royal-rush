@@ -3,92 +3,37 @@
 @tailwind utilities;
 
 :root {
-  --ludo-red: #e63946;
-  --ludo-blue: #457b9d;
-  --ludo-green: #4caf50;
-  --ludo-yellow: #ffca28;
-  --ludo-board: #f1faee;
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
   margin: 0;
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--ludo-board);
-}
-
-.ludo-container {
+  min-width: 320px;
   min-height: 100vh;
-  background-image: url('./assets/ludo-pattern.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-  position: relative;
-}
-
-.ludo-container::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.8);
-  z-index: 0;
-}
-
-.ludo-content {
-  position: relative;
-  z-index: 1;
-}
-
-.ludo-red {
-  color: var(--ludo-red);
-}
-
-.ludo-blue {
-  color: var(--ludo-blue);
-}
-
-.ludo-green {
-  color: var(--ludo-green);
-}
-
-.ludo-yellow {
-  color: var(--ludo-yellow);
 }
 
 .dice {
-  padding: 1rem;
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
 }
 
-@layer components {
-  .ludo-button {
-    @apply px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 shadow-lg;
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
   }
-  
-  .ludo-button-red {
-    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-300;
+  50% {
+    transform: translateY(-20px);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
   }
-  
-  .ludo-button-blue {
-    @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-300;
-  }
-  
-  .ludo-button-green {
-    @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-300;
-  }
-  
-  .ludo-button-yellow {
-    @apply bg-yellow-500 text-white hover:bg-yellow-600 focus:ring-yellow-300;
-  }
-  
-  .ludo-card {
-    @apply bg-white rounded-xl shadow-xl p-6 border-2 border-gray-100;
-  }
+}
+
+.animate-bounce {
+  animation: bounce 0.5s infinite;
 }

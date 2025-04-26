@@ -1,100 +1,119 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useDispatch, useSelector } from 'react-redux';
+import { rollDice, setIsRolling } from '../features/game/gameSlice';
 
-const Dice = ({ onRoll, disabled = false }) => {
-  const [diceValue, setDiceValue] = useState(1);
-  const [isRolling, setIsRolling] = useState(false);
+const Dice = () => {
+  const dispatch = useDispatch();
+  const { diceValue, isRolling } = useSelector(state => state.game);
+  const [rotation, setRotation] = useState(0);
 
-  // Dice faces represented as dot positions
-  const diceFaces = {
-    1: [{ top: '50%', left: '50%' }],
-    2: [
-      { top: '25%', left: '25%' },
-      { top: '75%', left: '75%' }
-    ],
-    3: [
-      { top: '25%', left: '25%' },
-      { top: '50%', left: '50%' },
-      { top: '75%', left: '75%' }
-    ],
-    4: [
-      { top: '25%', left: '25%' },
-      { top: '25%', left: '75%' },
-      { top: '75%', left: '25%' },
-      { top: '75%', left: '75%' }
-    ],
-    5: [
-      { top: '25%', left: '25%' },
-      { top: '25%', left: '75%' },
-      { top: '50%', left: '50%' },
-      { top: '75%', left: '25%' },
-      { top: '75%', left: '75%' }
-    ],
-    6: [
-      { top: '25%', left: '25%' },
-      { top: '25%', left: '75%' },
-      { top: '50%', left: '25%' },
-      { top: '50%', left: '75%' },
-      { top: '75%', left: '25%' },
-      { top: '75%', left: '75%' }
-    ]
+  useEffect(() => {
+    if (isRolling) {
+      const interval = setInterval(() => {
+        setRotation(prev => prev + 90);
+      }, 100);
+
+      // Stop rolling after a random time between 1-2 seconds
+      const rollTime = 1000 + Math.random() * 1000;
+      
+      setTimeout(() => {
+        clearInterval(interval);
+        dispatch(setIsRolling(false));
+      }, rollTime);
+
+      return () => clearInterval(interval);
+    }
+  }, [isRolling, dispatch]);
+
+  const handleRollDice = () => {
+    if (!isRolling) {
+      dispatch(setIsRolling(true));
+      // Generate random dice value (1-6)
+      const newValue = Math.floor(Math.random() * 6) + 1;
+      
+      // Wait for animation to complete before setting the value
+      setTimeout(() => {
+        dispatch(rollDice(newValue));
+      }, 1000);
+    }
   };
 
-  const rollDice = () => {
-    if (disabled || isRolling) return;
-    
-    setIsRolling(true);
-    
-    // Simulate dice rolling with changing values
-    let rollCount = 0;
-    const maxRolls = 10; // Number of visual "rolls" before settling
-    const rollInterval = setInterval(() => {
-      const newValue = Math.floor(Math.random() * 6) + 1;
-      setDiceValue(newValue);
-      rollCount++;
-      
-      if (rollCount >= maxRolls) {
-        clearInterval(rollInterval);
-        setIsRolling(false);
-        // Pass the final dice value to the parent component
-        onRoll && onRoll(newValue);
-      }
-    }, 100);
+  const renderDiceFace = () => {
+    switch (diceValue) {
+      case 1:
+        return (
+          <div className="flex items-center justify-center h-full">
+            <div className="w-3 h-3 bg-black rounded-full"></div>
+          </div>
+        );
+      case 2:
+        return (
+          <div className="flex items-center justify-between h-full p-2">
+            <div className="w-3 h-3 bg-black rounded-full"></div>
+            <div className="w-3 h-3 bg-black rounded-full self-end"></div>
+          </div>
+        );
+      case 3:
+        return (
+          <div className="flex flex-col justify-between h-full p-2">
+            <div className="w-3 h-3 bg-black rounded-full self-end"></div>
+            <div className="w-3 h-3 bg-black rounded-full self-center"></div>
+            <div className="w-3 h-3 bg-black rounded-full self-start"></div>
+          </div>
+        );
+      case 4:
+        return (
+          <div className="grid grid-cols-2 gap-2 p-2 h-full">
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-start"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-start"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-end"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-end"></div>
+          </div>
+        );
+      case 5:
+        return (
+          <div className="grid grid-cols-2 gap-2 p-2 h-full">
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-start"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-start"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-center self-center col-span-2"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-end"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-end"></div>
+          </div>
+        );
+      case 6:
+        return (
+          <div className="grid grid-cols-2 gap-2 p-2 h-full">
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-start"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-start"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-center"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-center"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-start self-end"></div>
+            <div className="w-3 h-3 bg-black rounded-full justify-self-end self-end"></div>
+          </div>
+        );
+      default:
+        return null;
+    }
   };
 
   return (
     <div className="flex flex-col items-center">
-      <motion.div
-        className="dice w-24 h-24 relative mx-auto mb-4 cursor-pointer"
-        whileHover={!disabled && !isRolling ? { scale: 1.05 } : {}}
-        whileTap={!disabled && !isRolling ? { scale: 0.95 } : {}}
-        animate={isRolling ? { rotate: [0, 90, 180, 270, 360] } : {}}
-        transition={isRolling ? { duration: 0.5, repeat: 2 } : {}}
-        onClick={rollDice}
+      <div 
+        className={`dice w-20 h-20 bg-white border-2 border-gray-300 rounded-lg shadow-lg mb-4 ${isRolling ? 'animate-bounce' : ''}`}
+        style={{ transform: `rotate(${rotation}deg)`, transition: 'transform 0.1s ease-in-out' }}
       >
-        {/* Dice dots */}
-        {diceFaces[diceValue].map((position, index) => (
-          <div
-            key={index}
-            className="absolute w-4 h-4 rounded-full bg-black"
-            style={{
-              top: position.top,
-              left: position.left,
-              transform: 'translate(-50%, -50%)'
-            }}
-          />
-        ))}
-      </motion.div>
-      
+        {renderDiceFace()}
+      </div>
       <button
-        className={`ludo-button ${
-          disabled ? 'bg-gray-400 cursor-not-allowed' : 'ludo-button-blue'
-        }`}
-        onClick={rollDice}
-        disabled={disabled || isRolling}
+        onClick={handleRollDice}
+        disabled={isRolling}
+        className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md ${isRolling ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
         {isRolling ? 'Rolling...' : 'Roll Dice'}
       </button>
+      {!isRolling && diceValue > 0 && (
+        <p className="mt-4 text-lg font-semibold">You rolled a {diceValue}!</p>
+      )}
     </div>
   );
 };
