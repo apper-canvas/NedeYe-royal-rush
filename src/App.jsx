@@ -4,7 +4,7 @@ import GameBoard from './components/GameBoard';
 function App() {
   return (
     <Router>
-      <div className="app min-h-screen bg-gradient-to-b from-blue-100 to-purple-100 py-8">
+      <div className="app min-h-screen py-8">
         <div className="container mx-auto px-4">
           <Routes>
             <Route path="/" element={<GameBoard />} />

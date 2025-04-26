@@ -11,12 +11,22 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* Ludo colors */
+  --ludo-red: #ef4444;
+  --ludo-green: #22c55e;
+  --ludo-blue: #3b82f6;
+  --ludo-yellow: #eab308;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-image: url('https://images.unsplash.com/photo-1586502243548-dad916cd3531?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 .dice {
@@ -36,4 +46,46 @@ body {
 
 .animate-bounce {
   animation: bounce 0.5s infinite;
+}
+
+/* Board styles */
+.ludo-board {
+  position: relative;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.ludo-board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(to right bottom, rgba(239, 68, 68, 0.1), rgba(59, 130, 246, 0.1), rgba(34, 197, 94, 0.1), rgba(234, 179, 8, 0.1));
+  z-index: -1;
+  border-radius: 0.5rem;
+}
+
+/* Add a pattern to the background */
+.game-board {
+  position: relative;
+}
+
+.game-board::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--ludo-red) 0.5px, transparent 1px),
+    radial-gradient(circle at 50% 50%, var(--ludo-blue) 0.5px, transparent 1px),
+    radial-gradient(circle at 50% 50%, var(--ludo-green) 0.5px, transparent 1px),
+    radial-gradient(circle at 50% 50%, var(--ludo-yellow) 0.5px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0, 25px 25px, 12.5px 12.5px, 37.5px 37.5px;
+  opacity: 0.15;
+  z-index: -1;
+  border-radius: 0.75rem;
 }

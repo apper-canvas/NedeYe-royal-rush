@@ -4,7 +4,7 @@ import { rollDice, setIsRolling } from '../features/game/gameSlice';
 
 const Dice = () => {
   const dispatch = useDispatch();
-  const { diceValue, isRolling } = useSelector(state => state.game);
+  const { diceValue, isRolling, currentPlayer, gameOver, canRollAgain } = useSelector(state => state.game);
   const [rotation, setRotation] = useState(0);
 
   useEffect(() => {
@@ -26,7 +26,7 @@ const Dice = () => {
   }, [isRolling, dispatch]);
 
   const handleRollDice = () => {
-    if (!isRolling) {
+    if (!isRolling && !gameOver) {
       dispatch(setIsRolling(true));
       // Generate random dice value (1-6)
       const newValue = Math.floor(Math.random() * 6) + 1;
@@ -96,6 +96,9 @@ const Dice = () => {
     }
   };
 
+  // Check if the current player can roll
+  const canRoll = !isRolling && !gameOver && (canRollAgain || true);
+
   return (
     <div className="flex flex-col items-center">
       <div 
@@ -106,12 +109,12 @@ const Dice = () => {
       </div>
       <button
         onClick={handleRollDice}
-        disabled={isRolling}
-        className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md ${isRolling ? 'opacity-50 cursor-not-allowed' : ''}`}
+        disabled={!canRoll}
+        className={`bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full shadow-md ${!canRoll ? 'opacity-50 cursor-not-allowed' : ''}`}
       >
-        {isRolling ? 'Rolling...' : 'Roll Dice'}
+        {isRolling ? 'Rolling...' : gameOver ? 'Game Over' : 'Roll Dice'}
       </button>
-      {!isRolling && diceValue > 0 && (
+      {!isRolling && diceValue > 0 && !gameOver && (
         <p className="mt-4 text-lg font-semibold">You rolled a {diceValue}!</p>
       )}
     </div>
